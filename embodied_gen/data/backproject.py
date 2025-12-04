@@ -34,6 +34,7 @@ from embodied_gen.data.utils import (
     CameraSetting,
     get_images_from_grid,
     init_kal_camera,
+    kaolin_to_opencv_view,
     normalize_vertices_array,
     post_process_texture,
     save_mesh_with_mtl,
@@ -304,28 +305,6 @@ class TextureBaker(object):
             )
         else:
             raise ValueError(f"Unknown mode: {mode}")
-
-
-def kaolin_to_opencv_view(raw_matrix):
-    R_orig = raw_matrix[:, :3, :3]
-    t_orig = raw_matrix[:, :3, 3]
-
-    R_target = torch.zeros_like(R_orig)
-    R_target[:, :, 0] = R_orig[:, :, 2]
-    R_target[:, :, 1] = R_orig[:, :, 0]
-    R_target[:, :, 2] = R_orig[:, :, 1]
-
-    t_target = t_orig
-
-    target_matrix = (
-        torch.eye(4, device=raw_matrix.device)
-        .unsqueeze(0)
-        .repeat(raw_matrix.size(0), 1, 1)
-    )
-    target_matrix[:, :3, :3] = R_target
-    target_matrix[:, :3, 3] = t_target
-
-    return target_matrix
 
 
 def parse_args():
