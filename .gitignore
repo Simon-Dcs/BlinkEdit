@@ -18,6 +18,7 @@ python/MANIFEST.in
 *.json
 !embodied_gen/skills/claude_plugin/.claude-plugin/marketplace.json
 !embodied_gen/skills/claude_plugin/plugins/embodiedgen/.claude-plugin/plugin.json
+!harnesses/**/HARNESS.json
 *.bak
 *.zip
 wheels*/
@@ -72,6 +73,23 @@ apps/gradio_cache/
 CLAUDE.md
 AGENTS.md
 .github/copilot-instructions.md
+
+# Model downloads and training artifacts
+/checkpoints/
+/hf_cache/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+pytorch_model*.bin
+diffusion_pytorch_model*.bin
+
+# Local environments, caches, and credentials
+/.venv/
+/.cache/
+/.aws/
+.env
+.env.local
 
 # Project landing page (docs/landing) — keep its otherwise-ignored site files tracked
 !docs/landing/**/*.html

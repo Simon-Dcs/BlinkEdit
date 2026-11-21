@@ -9,6 +9,9 @@ namespaces = true
 [tool.setuptools.exclude-package-data]
 "*" = ["__pycache__/*", "*.py[cod]"]
 
+[tool.setuptools.package-data]
+"embodied_gen.harness.scene_edit" = ["parser_instructions.txt"]
+
 [project]
 name = "embodied_gen"
 version = "v2.1.0"
@@ -44,6 +47,7 @@ layout-cli = "embodied_gen.scripts.gen_layout:entrypoint"
 sim-cli = "embodied_gen.scripts.simulate_sapien:entrypoint"
 room-cli = "embodied_gen.scripts.gen_room:entrypoint"
 affordance-cli = "embodied_gen.scripts.affordance_annot.affordance_annot:entrypoint"
+scene-edit-cli = "embodied_gen.harness.scene_edit.cli:main"
 
 [tool.ruff]
 line-length = 79

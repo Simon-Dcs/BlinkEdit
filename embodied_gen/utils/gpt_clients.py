@@ -324,7 +324,8 @@ class GPTclient:
                 command.extend(["--image", str(image_path)])
             command.append("-")
 
-            result = subprocess.run(
+            run_cli = getattr(self, "_codex_run", subprocess.run)
+            result = run_cli(
                 command,
                 input=prompt,
                 encoding="utf-8",

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "id": "scene_edit_h0",
+  "capabilities": ["scene.inspect@1", "scene.query@1", "scene.batch_edit@1", "scene.preview@1"],
+  "policy": "policy.py:Policy",
+  "skills": [{"name": "grounded_state", "requires": {"inspect": "scene.inspect@1"}}],
+  "memory": "memory/MEMORY.md"
+}

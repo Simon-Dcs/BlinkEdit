@@ -167,6 +167,8 @@ class FloorplanManager:
         output_strategy: Literal[
             "suffix", "overwrite", "timestamp"
         ] = "suffix",
+        *,
+        restore_collector=None,
     ) -> None:
         """Initialize the floorplan manager.
 
@@ -185,7 +187,10 @@ class FloorplanManager:
             mesh_sample_num=mesh_sample_num,
             ignore_items=ignore_items,
         )
-        self.collector.collect(urdf_path)
+        if restore_collector is None:
+            self.collector.collect(urdf_path)
+        else:
+            restore_collector(self.collector, urdf_path)
         self.pending_instance_data: dict | None = None
 
     def _get_output_path(

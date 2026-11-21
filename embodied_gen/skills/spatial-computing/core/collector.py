@@ -285,6 +285,9 @@ class UrdfSemanticInfoCollector:
 
         # ProcessPoolExecutor bypasses GIL for CPU-bound trimesh ops.
         # Cap workers to balance parallelism vs memory overhead.
+        if not tasks:
+            self.instances['walls'] = Polygon()
+            return
         n_workers = min(len(tasks), os.cpu_count() or 4, 8)
         futures_map: dict = {}
         with ProcessPoolExecutor(max_workers=n_workers) as executor:
@@ -456,9 +459,18 @@ class UrdfSemanticInfoCollector:
         x, y, candidate = placement
         self.instances[instance_key] = candidate
         final_z = base_z - mesh.bounds[0][2] + DEFAULT_Z_OFFSET
+        center = [round(v, 4) for v in (x, y, final_z)]
+        # Match collect(): newly placed instances must immediately support
+        # queries and subsequent placement, including deferred URDF updates.
+        self.instance_meta[instance_key] = {
+            "mesh_path": os.fspath(asset_path),
+            "xyz": np.asarray(center),
+            "rpy": np.asarray(rotation_rpy),
+            "original_link_name": instance_key,
+        }
         self._update_internal_state()
 
-        return [round(v, 4) for v in (x, y, final_z)]
+        return center
 
     def _resolve_room_polygon(self, in_room: str | None) -> Geometry | None:
         """Resolve room name to polygon.
